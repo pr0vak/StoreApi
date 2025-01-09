@@ -204,7 +204,6 @@ public class ProductsController : StoreController
 
             return Ok(new ServerResponse
             {
-                IsSuccess = true,
                 StatusCode = HttpStatusCode.NoContent
             });
         }
