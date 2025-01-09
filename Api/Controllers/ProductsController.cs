@@ -4,6 +4,7 @@ using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Api.ModelDto;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Api.Controllers;
 
@@ -16,7 +17,7 @@ public class ProductsController : StoreController
     [HttpGet]
     public async Task<IActionResult> GetProducts()
     {
-        ResponseServer response = new ResponseServer
+        ServerResponse response = new ServerResponse
         {
             StatusCode = HttpStatusCode.OK,
             Result = await dbContext.Products.ToListAsync()
@@ -28,7 +29,7 @@ public class ProductsController : StoreController
     public async Task<IActionResult> GetProductById(int id)
     {
         Product product = await dbContext.Products.FirstOrDefaultAsync(x => x.Id == id);
-        ResponseServer response = new ResponseServer();
+        ServerResponse response = new ServerResponse();
         if (product is null)
         {
             response.IsSuccess = false;
@@ -43,7 +44,7 @@ public class ProductsController : StoreController
     }
 
     [HttpPost]
-    public async Task<ActionResult<ResponseServer>> CreateProduct(
+    public async Task<ActionResult<ServerResponse>> CreateProduct(
         [FromBody] ProductCreateDto productCreateDto)
     {
         try
@@ -53,10 +54,10 @@ public class ProductsController : StoreController
                 if (productCreateDto.Image is null
                     || productCreateDto.Image.Length == 0)
                 {
-                    return BadRequest(new ResponseServer
+                    return BadRequest(new ServerResponse
                     {
-                        StatusCode = HttpStatusCode.BadRequest,
                         IsSuccess = false,
+                        StatusCode = HttpStatusCode.BadRequest,
                         ErrorMessages = { "Image не может быть пустым" }
                     });
                 }
@@ -75,7 +76,7 @@ public class ProductsController : StoreController
                     await dbContext.Products.AddAsync(item);
                     await dbContext.SaveChangesAsync();
 
-                    ResponseServer response = new ResponseServer
+                    ServerResponse response = new ServerResponse
                     {
                         StatusCode = HttpStatusCode.Created,
                         Result = item
@@ -85,7 +86,7 @@ public class ProductsController : StoreController
             }
             else
             {
-                return BadRequest(new ResponseServer
+                return BadRequest(new ServerResponse
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.BadRequest,
@@ -95,11 +96,85 @@ public class ProductsController : StoreController
         }
         catch (Exception ex)
         {
-            return BadRequest(new ResponseServer
+            return BadRequest(new ServerResponse
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
                 ErrorMessages = { "Ошибка сервера", ex.Message }
+            });
+        }
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult<ServerResponse>> UpdateProduct(
+        int id, [FromBody] ProductUpdateDto productUpdateDto)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                if (productUpdateDto is null
+                    || productUpdateDto.Id != id)
+                {
+                    return BadRequest(new ServerResponse
+                    {
+                        IsSuccess = false,
+                        StatusCode = HttpStatusCode.BadRequest,
+                        ErrorMessages = { "Несоответствие модели данных" }
+                    });
+                }
+                else
+                {
+                    Product productFromDb = await dbContext.Products.FindAsync(id);
+
+                    if (productFromDb is null)
+                    {
+                        return NotFound(new ServerResponse
+                        {
+                            IsSuccess = false,
+                            StatusCode = HttpStatusCode.NotFound,
+                            ErrorMessages = { "Продукт с таким id не найден" }
+                        });
+                    }
+
+                    productFromDb.Name = productUpdateDto.Name;
+                    productFromDb.Description = productUpdateDto.Description;
+                    productFromDb.Category = productUpdateDto.Category;
+                    productFromDb.SpecialTag = productUpdateDto.SpecialTag;
+                    productFromDb.Price = productUpdateDto.Price;
+
+                    if (productUpdateDto.Image is not null && productUpdateDto.Image.Length > 0)
+                    {
+                        productFromDb.Image = "https://dummyimage.com/200x200/fff/aaa";
+                    }
+
+                    dbContext.Products.Update(productFromDb);
+                    await dbContext.SaveChangesAsync();
+
+                    return Ok(new ServerResponse
+                    {
+                        StatusCode = HttpStatusCode.OK,
+                        Result = productFromDb
+                    });
+                }
+            }
+            else
+            {
+                return BadRequest(new ServerResponse
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    ErrorMessages = { "Модель данных не подходит" }
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ServerResponse
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                ErrorMessages = { "Что-то пошло не так", ex.Message }
             });
         }
     }
