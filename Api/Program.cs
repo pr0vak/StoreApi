@@ -4,6 +4,8 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddPostgreSqlDbContext(builder.Configuration);
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
