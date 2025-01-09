@@ -61,38 +61,34 @@ public class ProductsController : StoreController
                         ErrorMessages = { "Image не может быть пустым" }
                     });
                 }
-                else
+
+                Product item = new()
                 {
-                    Product item = new()
-                    {
-                        Name = productCreateDto.Name,
-                        Description = productCreateDto.Description,
-                        SpecialTag = productCreateDto.SpecialTag,
-                        Category = productCreateDto.Category,
-                        Price = productCreateDto.Price,
-                        Image = "https://dummyimage.com/150x150/fff/aaa"
-                    };
+                    Name = productCreateDto.Name,
+                    Description = productCreateDto.Description,
+                    SpecialTag = productCreateDto.SpecialTag,
+                    Category = productCreateDto.Category,
+                    Price = productCreateDto.Price,
+                    Image = "https://dummyimage.com/150x150/fff/aaa"
+                };
 
-                    await dbContext.Products.AddAsync(item);
-                    await dbContext.SaveChangesAsync();
+                await dbContext.Products.AddAsync(item);
+                await dbContext.SaveChangesAsync();
 
-                    ServerResponse response = new ServerResponse
-                    {
-                        StatusCode = HttpStatusCode.Created,
-                        Result = item
-                    };
-                    return CreatedAtRoute(nameof(GetProductById), new { id = item.Id }, response);
-                }
+                ServerResponse response = new ServerResponse
+                {
+                    StatusCode = HttpStatusCode.Created,
+                    Result = item
+                };
+                return CreatedAtRoute(nameof(GetProductById), new { id = item.Id }, response);
             }
-            else
+
+            return BadRequest(new ServerResponse
             {
-                return BadRequest(new ServerResponse
-                {
-                    IsSuccess = false,
-                    StatusCode = HttpStatusCode.BadRequest,
-                    ErrorMessages = { "Модель данных не подходит" }
-                });
-            }
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                ErrorMessages = { "Модель данных не подходит" }
+            });
         }
         catch (Exception ex)
         {
@@ -123,50 +119,94 @@ public class ProductsController : StoreController
                         ErrorMessages = { "Несоответствие модели данных" }
                     });
                 }
-                else
+
+                Product productFromDb = await dbContext.Products.FindAsync(id);
+
+                if (productFromDb is null)
                 {
-                    Product productFromDb = await dbContext.Products.FindAsync(id);
-
-                    if (productFromDb is null)
+                    return NotFound(new ServerResponse
                     {
-                        return NotFound(new ServerResponse
-                        {
-                            IsSuccess = false,
-                            StatusCode = HttpStatusCode.NotFound,
-                            ErrorMessages = { "Продукт с таким id не найден" }
-                        });
-                    }
-
-                    productFromDb.Name = productUpdateDto.Name;
-                    productFromDb.Description = productUpdateDto.Description;
-                    productFromDb.Category = productUpdateDto.Category;
-                    productFromDb.SpecialTag = productUpdateDto.SpecialTag;
-                    productFromDb.Price = productUpdateDto.Price;
-
-                    if (productUpdateDto.Image is not null && productUpdateDto.Image.Length > 0)
-                    {
-                        productFromDb.Image = "https://dummyimage.com/200x200/fff/aaa";
-                    }
-
-                    dbContext.Products.Update(productFromDb);
-                    await dbContext.SaveChangesAsync();
-
-                    return Ok(new ServerResponse
-                    {
-                        StatusCode = HttpStatusCode.OK,
-                        Result = productFromDb
+                        IsSuccess = false,
+                        StatusCode = HttpStatusCode.NotFound,
+                        ErrorMessages = { "Продукт с таким id не найден" }
                     });
                 }
+
+                productFromDb.Name = productUpdateDto.Name;
+                productFromDb.Description = productUpdateDto.Description;
+                productFromDb.Category = productUpdateDto.Category;
+                productFromDb.SpecialTag = productUpdateDto.SpecialTag;
+                productFromDb.Price = productUpdateDto.Price;
+
+                if (productUpdateDto.Image is not null && productUpdateDto.Image.Length > 0)
+                {
+                    productFromDb.Image = "https://dummyimage.com/200x200/fff/aaa";
+                }
+
+                dbContext.Products.Update(productFromDb);
+                await dbContext.SaveChangesAsync();
+
+                return Ok(new ServerResponse
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Result = productFromDb
+                });
             }
-            else
+
+            return BadRequest(new ServerResponse
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                ErrorMessages = { "Модель данных не подходит" }
+            });
+
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ServerResponse
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                ErrorMessages = { "Что-то пошло не так", ex.Message }
+            });
+        }
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<ServerResponse>> RemoveProductById(int id)
+    {
+        try
+        {
+            if (id <= 0)
             {
                 return BadRequest(new ServerResponse
                 {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.BadRequest,
-                    ErrorMessages = { "Модель данных не подходит" }
+                    ErrorMessages = { "Неверный id" }
                 });
             }
+
+            var product = await dbContext.Products.FindAsync(id);
+
+            if (product is null)
+            {
+                return NotFound(new ServerResponse
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.NotFound,
+                    ErrorMessages = { "Продукт с таким id не найден" }
+                });
+            }
+
+            dbContext.Products.Remove(product);
+            await dbContext.SaveChangesAsync();
+
+            return Ok(new ServerResponse
+            {
+                IsSuccess = true,
+                StatusCode = HttpStatusCode.NoContent
+            });
         }
         catch (Exception ex)
         {
