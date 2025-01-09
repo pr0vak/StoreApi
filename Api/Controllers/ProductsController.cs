@@ -1,7 +1,6 @@
-namespace Api.Controllers
-{
-    public class ProductsController : StoreController
-    {
+namespace Api.Controllers;
 
-    }
+public class ProductsController : StoreController
+{
+
 }
