@@ -3,6 +3,7 @@ using Api.Common;
 using Api.Data;
 using Api.ModelDto;
 using Api.Models;
+using Api.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,15 +14,17 @@ public class AuthController : StoreController
 {
     private readonly UserManager<AppUser> userManager;
     private readonly RoleManager<IdentityRole> roleManager;
+    public readonly JwtTokenGenerator jwtTokenGenerator;
 
     public AuthController(AppDbContext dbContext, UserManager<AppUser> userManager,
-        RoleManager<IdentityRole> roleManager) : base(dbContext)
+        RoleManager<IdentityRole> roleManager, JwtTokenGenerator jwtTokenGenerator) : base(dbContext)
     {
+        this.jwtTokenGenerator = jwtTokenGenerator;
         this.roleManager = roleManager;
         this.userManager = userManager;
     }
 
-    [HttpPost]
+    [HttpPost("Register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequestDto)
     {
         if (registerRequestDto is null)
@@ -77,6 +80,36 @@ public class AuthController : StoreController
         {
             StatusCode = HttpStatusCode.OK,
             Result = "Регистрация завершена"
+        });
+    }
+
+    [HttpPost("Login")]
+    public async Task<ActionResult<ServerResponse>> Login([FromBody] LoginRequestDto loginRequestDto)
+    {
+        var userFromDb = await dbContext.AppUsers
+            .FirstOrDefaultAsync(u => u.Email.ToLower() == loginRequestDto.Email.ToLower());
+        if (userFromDb is null
+            || !await userManager.CheckPasswordAsync(userFromDb, loginRequestDto.Password))
+        {
+            return BadRequest(new ServerResponse
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                ErrorMessages = { "Такого пользователя нет" }
+            });
+        }
+
+        var roles = await userManager.GetRolesAsync(userFromDb);
+        var token = jwtTokenGenerator.GenerateJwtToken(userFromDb, roles);
+
+        return Ok(new ServerResponse
+        {
+            StatusCode = HttpStatusCode.OK,
+            Result = new LoginResponseDto
+            {
+                Email = userFromDb.Email,
+                Token = token
+            }
         });
     }
 }
