@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 public static class PostgreSqlServiceExtension
@@ -12,5 +13,11 @@ public static class PostgreSqlServiceExtension
                     configuration.GetConnectionString("PostgreSQLConnection"));
             }
         );
+    }
+
+    public static void AddPostgreSqlIdentityContext(this IServiceCollection services)
+    {
+        services.AddIdentity<IdentityUser, IdentityRole>()
+            .AddEntityFrameworkStores<AppDbContext>();
     }
 }
