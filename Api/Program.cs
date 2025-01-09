@@ -21,4 +21,6 @@ if (app.Environment.IsDevelopment())
 app.MapControllers();
 app.UseHttpsRedirection();
 
+await app.Services.InitializeRoleAsync();
+
 app.Run();
