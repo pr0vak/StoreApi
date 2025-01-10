@@ -52,7 +52,7 @@ public class OrderController : StoreController
         }
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("GetOrderById/{id}")]
     public async Task<ActionResult<ServerResponse>> GetOrder(int id)
     {
         if (id <= 0)
@@ -67,7 +67,7 @@ public class OrderController : StoreController
 
         try
         {
-            var orderHeader = await ordersService.GetOrderById(id);
+            var orderHeader = await ordersService.GetOrderByIdAsync(id);
 
             if (orderHeader is null)
             {
@@ -93,6 +93,31 @@ public class OrderController : StoreController
                 StatusCode = HttpStatusCode.BadRequest,
                 ErrorMessages = { "Что-то пошло не так", ex.Message }
             });
+        }
+    }
+
+    [HttpGet("GetOrdersByUserId/{userId}")]
+    public async Task<ActionResult<ServerResponse>> GetOrdersByUserId(string userId)
+    {
+        try
+        {
+            var orderHeaders = await ordersService.GetOrderByUserIdAsync(userId);
+            return Ok(new ServerResponse
+            {
+                StatusCode = HttpStatusCode.OK,
+                Result = orderHeaders
+            });
+        }
+        catch (Exception ex)
+        {
+            // Для примера
+            return StatusCode((int)HttpStatusCode.InternalServerError,
+                new ServerResponse
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    ErrorMessages = { "При обработке возникла проблема", ex.Message }
+                });
         }
     }
 }
