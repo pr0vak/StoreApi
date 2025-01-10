@@ -2,6 +2,7 @@ using Api.Common;
 using Api.Data;
 using Api.ModelDto;
 using Api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api.Services;
 
@@ -49,5 +50,13 @@ public class OrdersService
         await dbContext.SaveChangesAsync();
 
         return order;
+    }
+
+    public async Task<OrderHeader> GetOrderById(int id)
+    {
+        return await dbContext.OrderHeaders
+            .Include(items => items.OrderDetailItems)
+            .ThenInclude(od => od.Product)
+            .FirstOrDefaultAsync(u => u.OrderHeaderId == id);
     }
 }
