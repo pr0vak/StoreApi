@@ -67,7 +67,7 @@ public class ShoppingCartService
             }
             else
             {
-                cartItemInCart.Quantity = newQuantity;
+                cartItemInCart.Quantity = updateQuantity;
             }
         }
 
@@ -78,7 +78,10 @@ public class ShoppingCartService
     {
         if (string.IsNullOrEmpty(userId))
         {
-            return new ShoppingCart();
+            ShoppingCart newShoppingCart = new ShoppingCart();
+            newShoppingCart.UserId = userId;
+            newShoppingCart.CartItems = new List<CartItem>();
+            return newShoppingCart;
         }
 
         ShoppingCart shoppingCart = await dbContext.ShoppingCarts
