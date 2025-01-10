@@ -12,4 +12,18 @@ public static class SharedData
             get => [Admin, Consumer];
         }
     }
+
+    public static class OrderStatus
+    {
+        public const string Pending = "pending";
+        public const string ReadyToShip = "ready_to_ship";
+        public const string Sent = "sent";
+        public const string ReadyForPickup = "ready_for_pickup";
+        public const string Completed = "completed";
+
+        public static IReadOnlyList<string> AllStatuses
+        {
+            get => [Pending, ReadyToShip, Sent, ReadyForPickup, Completed];
+        }
+    }
 }
