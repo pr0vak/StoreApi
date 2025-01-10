@@ -1,8 +1,11 @@
 using System.Net;
+using Api.Common;
 using Api.Data;
 using Api.ModelDto;
 using Api.Models;
 using Api.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
@@ -118,6 +121,43 @@ public class OrderController : StoreController
                     StatusCode = HttpStatusCode.InternalServerError,
                     ErrorMessages = { "При обработке возникла проблема", ex.Message }
                 });
+        }
+    }
+
+    [Authorize(Roles = SharedData.Roles.Admin)]
+    [HttpPut("UpdateOrder/{id}")]
+    public async Task<ActionResult<ServerResponse>> UpdateOrderHeader(int id,
+        [FromBody] OrderHeaderUpdateDto orderHeaderUpdateDto)
+    {
+        try
+        {
+            bool isSuccess = await ordersService.UpdateOrderHeaderAsync(id, orderHeaderUpdateDto);
+
+            if (!isSuccess)
+            {
+                return BadRequest(new ServerResponse
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    ErrorMessages = { "Обновление пошло не по плану" }
+                });
+            }
+
+            return Ok(new ServerResponse
+            {
+                StatusCode = HttpStatusCode.OK,
+                Result = new { Success = true, Message = "Всё обновлено" }
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError,
+            new ServerResponse
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.InternalServerError,
+                ErrorMessages = { "При обновлении заказа возникла проблема", ex.Message }
+            });
         }
     }
 }
