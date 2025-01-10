@@ -23,6 +23,7 @@ public class OrdersService
             CustomerEmail = orderHeaderCreateDto.CustomerEmail,
             OrderTotalAmount = orderHeaderCreateDto.OrderTotalAmount,
             TotalCount = orderHeaderCreateDto.TotalCount,
+            OrderDateTime = DateTime.UtcNow,
             Status = string.IsNullOrEmpty(orderHeaderCreateDto.Status)
                 ? SharedData.OrderStatus.Pending
                 : orderHeaderCreateDto.Status
