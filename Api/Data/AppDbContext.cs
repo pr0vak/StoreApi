@@ -8,10 +8,12 @@ namespace Api.Data;
 
 public class AppDbContext : IdentityDbContext
 {
-    public AppDbContext(DbContextOptions options) : base(options) { }
-
     public DbSet<AppUser> AppUsers { get; set; }
     public DbSet<Product> Products { get; set; }
+    public DbSet<CartItem> CartItems { get; set; }
+    public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+
+    public AppDbContext(DbContextOptions options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
