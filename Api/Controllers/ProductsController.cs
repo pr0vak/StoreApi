@@ -28,6 +28,18 @@ public class ProductsController : StoreController
         return Ok(response);
     }
 
+    [HttpGet("Pagination")]
+    public async Task<IActionResult> FetchProductsWithPagination(int skip = 0, int take = 5)
+    {
+        var products = await dbContext.Products.Skip(skip).Take(take).ToListAsync();
+
+        return Ok(new ServerResponse
+        {
+            StatusCode = HttpStatusCode.OK,
+            Result = products
+        });
+    }
+
     [HttpGet("{id}", Name = nameof(GetProductById))]
     public async Task<IActionResult> GetProductById(int id)
     {
