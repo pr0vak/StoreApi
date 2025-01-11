@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250109053448_Seed-Products-List")]
-    partial class SeedProductsList
+    [Migration("20250111092117_Add-All")]
+    partial class AddAll
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,103 @@ namespace Api.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("Api.Models.CartItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ShoppingCartId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ShoppingCartId");
+
+                    b.ToTable("CartItems");
+                });
+
+            modelBuilder.Entity("Api.Models.OrderDetails", b =>
+                {
+                    b.Property<int>("OrderDetailId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("OrderDetailId"));
+
+                    b.Property<string>("ItemName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("OrderHeaderId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.HasKey("OrderDetailId");
+
+                    b.HasIndex("OrderHeaderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderDetails");
+                });
+
+            modelBuilder.Entity("Api.Models.OrderHeader", b =>
+                {
+                    b.Property<int>("OrderHeaderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("OrderHeaderId"));
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CustomerEmail")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CustomerName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("OrderDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("OrderTotalAmount")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("text");
+
+                    b.Property<int>("TotalCount")
+                        .HasColumnType("integer");
+
+                    b.HasKey("OrderHeaderId");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("OrderHeaders");
+                });
 
             modelBuilder.Entity("Api.Models.Product", b =>
                 {
@@ -61,103 +158,119 @@ namespace Api.Migrations
                         new
                         {
                             Id = 1,
-                            Category = "Категория 1",
-                            Description = "Порядка зависит повседневная рост представляет позиции поставленных мира нас.1",
-                            Image = "https://dummyimage.com/100x100/fff/aaa",
-                            Name = "Интеллектуальный Натуральный Компьютер1",
-                            Price = 530.23m,
-                            SpecialTag = "Популярные"
+                            Category = "Категория 2",
+                            Description = "Последовательного условий что.",
+                            Image = "https://s3.timeweb.cloud/c57cd5f2-81f2b807-e48f-465d-8404-4a831602b204/img0.png",
+                            Name = "Фантастический Гранитный Стол",
+                            Price = 778.41m,
+                            SpecialTag = "Новинка"
                         },
                         new
                         {
                             Id = 2,
                             Category = "Категория 1",
-                            Description = "Значимость прогресса стороны.1",
-                            Image = "https://dummyimage.com/100x100/fff/aaa",
-                            Name = "Практичный Бетонный Кошелек1",
-                            Price = 651.03m,
-                            SpecialTag = "Рекомендуемые"
+                            Description = "Обучения модель значение задания.",
+                            Image = "https://s3.timeweb.cloud/c57cd5f2-81f2b807-e48f-465d-8404-4a831602b204/img1.png",
+                            Name = "Практичный Неодимовый Куртка",
+                            Price = 852.40m,
+                            SpecialTag = "Новинка"
                         },
                         new
                         {
                             Id = 3,
                             Category = "Категория 2",
-                            Description = "Общества системы соответствующей нашей соответствующей другой внедрения.1",
-                            Image = "https://dummyimage.com/100x100/fff/aaa",
-                            Name = "Интеллектуальный Кожанный Стол1",
-                            Price = 641.40m,
+                            Description = "Нашей по участия участия.",
+                            Image = "https://s3.timeweb.cloud/c57cd5f2-81f2b807-e48f-465d-8404-4a831602b204/img2.png",
+                            Name = "Невероятный Резиновый Кепка",
+                            Price = 461.49m,
                             SpecialTag = "Популярные"
                         },
                         new
                         {
                             Id = 4,
                             Category = "Категория 2",
-                            Description = "Подготовке способствует существующий высшего роль концепция и подготовке.1",
-                            Image = "https://dummyimage.com/100x100/fff/aaa",
-                            Name = "Грубый Натуральный Стул1",
-                            Price = 132.88m,
-                            SpecialTag = "Популярные"
+                            Description = "Дальнейшее прежде способствует разработке модели соответствующей организационной социально-ориентированный обеспечивает.",
+                            Image = "https://s3.timeweb.cloud/c57cd5f2-81f2b807-e48f-465d-8404-4a831602b204/img3.png",
+                            Name = "Лоснящийся Резиновый Куртка",
+                            Price = 525.37m,
+                            SpecialTag = "Рекомендуемые"
                         },
                         new
                         {
                             Id = 5,
                             Category = "Категория 1",
-                            Description = "Систему процесс высокотехнологичная структура кадровой массового повышению структура работы.1",
-                            Image = "https://dummyimage.com/100x100/fff/aaa",
-                            Name = "Свободный Пластиковый Кошелек1",
-                            Price = 274.37m,
-                            SpecialTag = "Рекомендуемые"
+                            Description = "Общества социально-экономическое представляет выбранный поставленных значение.",
+                            Image = "https://s3.timeweb.cloud/c57cd5f2-81f2b807-e48f-465d-8404-4a831602b204/img4.png",
+                            Name = "Интеллектуальный Меховой Носки",
+                            Price = 475.50m,
+                            SpecialTag = "Новинка"
                         },
                         new
                         {
                             Id = 6,
-                            Category = "Категория 1",
-                            Description = "Насущным укрепления и намеченных предпосылки правительством место в широким и.1",
-                            Image = "https://dummyimage.com/100x100/fff/aaa",
-                            Name = "Невероятный Меховой Стол1",
-                            Price = 465.71m,
+                            Category = "Категория 3",
+                            Description = "Прогрессивного экономической повышению с забывать дальнейшее представляет концепция развития условий.",
+                            Image = "https://s3.timeweb.cloud/c57cd5f2-81f2b807-e48f-465d-8404-4a831602b204/img5.png",
+                            Name = "Грубый Гранитный Носки",
+                            Price = 123.86m,
                             SpecialTag = "Популярные"
                         },
                         new
                         {
                             Id = 7,
                             Category = "Категория 1",
-                            Description = "Шагов значение национальный.1",
-                            Image = "https://dummyimage.com/100x100/fff/aaa",
-                            Name = "Свободный Пластиковый Кепка1",
-                            Price = 318.82m,
-                            SpecialTag = "Рекомендуемые"
+                            Description = "Системы эксперимент проект.",
+                            Image = "https://s3.timeweb.cloud/c57cd5f2-81f2b807-e48f-465d-8404-4a831602b204/img6.png",
+                            Name = "Свободный Резиновый Берет",
+                            Price = 792.66m,
+                            SpecialTag = "Новинка"
                         },
                         new
                         {
                             Id = 8,
-                            Category = "Категория 2",
-                            Description = "Новых играет обеспечение играет правительством требует концепция участия требует.1",
-                            Image = "https://dummyimage.com/100x100/fff/aaa",
-                            Name = "Эргономичный Пластиковый Ботинок1",
-                            Price = 379.19m,
+                            Category = "Категория 3",
+                            Description = "Национальный рамки следует систему нашей.",
+                            Image = "https://s3.timeweb.cloud/c57cd5f2-81f2b807-e48f-465d-8404-4a831602b204/img7.png",
+                            Name = "Потрясающий Кожанный Кошелек",
+                            Price = 148.89m,
                             SpecialTag = "Рекомендуемые"
                         },
                         new
                         {
                             Id = 9,
-                            Category = "Категория 3",
-                            Description = "Образом задача проверки материально-технической предложений же.1",
-                            Image = "https://dummyimage.com/100x100/fff/aaa",
-                            Name = "Большой Натуральный Кошелек1",
-                            Price = 199.82m,
-                            SpecialTag = "Популярные"
+                            Category = "Категория 2",
+                            Description = "Задача особенности предложений роль эксперимент проверки.",
+                            Image = "https://s3.timeweb.cloud/c57cd5f2-81f2b807-e48f-465d-8404-4a831602b204/img8.png",
+                            Name = "Грубый Меховой Берет",
+                            Price = 618.04m,
+                            SpecialTag = "Новинка"
                         },
                         new
                         {
                             Id = 10,
-                            Category = "Категория 3",
-                            Description = "Национальный повышению модель участниками целесообразности.1",
-                            Image = "https://dummyimage.com/100x100/fff/aaa",
-                            Name = "Маленький Хлопковый Майка1",
-                            Price = 482.21m,
+                            Category = "Категория 1",
+                            Description = "Обучения направлений зависит.",
+                            Image = "https://s3.timeweb.cloud/c57cd5f2-81f2b807-e48f-465d-8404-4a831602b204/img9.png",
+                            Name = "Грубый Натуральный Кошелек",
+                            Price = 698.59m,
                             SpecialTag = "Рекомендуемые"
                         });
+                });
+
+            modelBuilder.Entity("Api.Models.ShoppingCart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -375,6 +488,49 @@ namespace Api.Migrations
                     b.HasDiscriminator().HasValue("AppUser");
                 });
 
+            modelBuilder.Entity("Api.Models.CartItem", b =>
+                {
+                    b.HasOne("Api.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Api.Models.ShoppingCart", null)
+                        .WithMany("CartItems")
+                        .HasForeignKey("ShoppingCartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Api.Models.OrderDetails", b =>
+                {
+                    b.HasOne("Api.Models.OrderHeader", null)
+                        .WithMany("OrderDetailItems")
+                        .HasForeignKey("OrderHeaderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Api.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Api.Models.OrderHeader", b =>
+                {
+                    b.HasOne("Api.Models.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("AppUserId");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -424,6 +580,16 @@ namespace Api.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Api.Models.OrderHeader", b =>
+                {
+                    b.Navigation("OrderDetailItems");
+                });
+
+            modelBuilder.Entity("Api.Models.ShoppingCart", b =>
+                {
+                    b.Navigation("CartItems");
                 });
 #pragma warning restore 612, 618
         }

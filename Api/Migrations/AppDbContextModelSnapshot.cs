@@ -155,102 +155,102 @@ namespace Api.Migrations
                         new
                         {
                             Id = 1,
-                            Category = "Категория 1",
-                            Description = "Массового соответствующей интересный значительной процесс показывает сомнений кадровой.",
-                            Image = "https://dummyimage.com/100x100/fff/aaa",
-                            Name = "Потрясающий Гранитный Портмоне",
-                            Price = 997.18m,
-                            SpecialTag = "Рекомендуемые"
+                            Category = "Категория 2",
+                            Description = "Последовательного условий что.",
+                            Image = "https://s3.timeweb.cloud/c57cd5f2-81f2b807-e48f-465d-8404-4a831602b204/img0.png",
+                            Name = "Фантастический Гранитный Стол",
+                            Price = 778.41m,
+                            SpecialTag = "Новинка"
                         },
                         new
                         {
                             Id = 2,
-                            Category = "Категория 2",
-                            Description = "Повседневной новая определения в эксперимент массового.",
-                            Image = "https://dummyimage.com/100x100/fff/aaa",
-                            Name = "Эргономичный Хлопковый Компьютер",
-                            Price = 829.74m,
-                            SpecialTag = "Рекомендуемые"
+                            Category = "Категория 1",
+                            Description = "Обучения модель значение задания.",
+                            Image = "https://s3.timeweb.cloud/c57cd5f2-81f2b807-e48f-465d-8404-4a831602b204/img1.png",
+                            Name = "Практичный Неодимовый Куртка",
+                            Price = 852.40m,
+                            SpecialTag = "Новинка"
                         },
                         new
                         {
                             Id = 3,
-                            Category = "Категория 3",
-                            Description = "И выбранный активом другой принципов важную всего организации потребностям.",
-                            Image = "https://dummyimage.com/100x100/fff/aaa",
-                            Name = "Свободный Резиновый Кулон",
-                            Price = 303.20m,
-                            SpecialTag = "Рекомендуемые"
+                            Category = "Категория 2",
+                            Description = "Нашей по участия участия.",
+                            Image = "https://s3.timeweb.cloud/c57cd5f2-81f2b807-e48f-465d-8404-4a831602b204/img2.png",
+                            Name = "Невероятный Резиновый Кепка",
+                            Price = 461.49m,
+                            SpecialTag = "Популярные"
                         },
                         new
                         {
                             Id = 4,
                             Category = "Категория 2",
-                            Description = "Процесс технологий сущности что.",
-                            Image = "https://dummyimage.com/100x100/fff/aaa",
-                            Name = "Практичный Резиновый Клатч",
-                            Price = 751.05m,
-                            SpecialTag = "Популярные"
+                            Description = "Дальнейшее прежде способствует разработке модели соответствующей организационной социально-ориентированный обеспечивает.",
+                            Image = "https://s3.timeweb.cloud/c57cd5f2-81f2b807-e48f-465d-8404-4a831602b204/img3.png",
+                            Name = "Лоснящийся Резиновый Куртка",
+                            Price = 525.37m,
+                            SpecialTag = "Рекомендуемые"
                         },
                         new
                         {
                             Id = 5,
-                            Category = "Категория 2",
-                            Description = "Анализа общества активом.",
-                            Image = "https://dummyimage.com/100x100/fff/aaa",
-                            Name = "Свободный Стальной Майка",
-                            Price = 738.19m,
-                            SpecialTag = "Популярные"
-                        },
-                        new
-                        {
-                            Id = 6,
                             Category = "Категория 1",
-                            Description = "Не новых насущным занимаемых соответствующих играет.",
-                            Image = "https://dummyimage.com/100x100/fff/aaa",
-                            Name = "Эргономичный Хлопковый Портмоне",
-                            Price = 610.88m,
+                            Description = "Общества социально-экономическое представляет выбранный поставленных значение.",
+                            Image = "https://s3.timeweb.cloud/c57cd5f2-81f2b807-e48f-465d-8404-4a831602b204/img4.png",
+                            Name = "Интеллектуальный Меховой Носки",
+                            Price = 475.50m,
                             SpecialTag = "Новинка"
                         },
                         new
                         {
+                            Id = 6,
+                            Category = "Категория 3",
+                            Description = "Прогрессивного экономической повышению с забывать дальнейшее представляет концепция развития условий.",
+                            Image = "https://s3.timeweb.cloud/c57cd5f2-81f2b807-e48f-465d-8404-4a831602b204/img5.png",
+                            Name = "Грубый Гранитный Носки",
+                            Price = 123.86m,
+                            SpecialTag = "Популярные"
+                        },
+                        new
+                        {
                             Id = 7,
-                            Category = "Категория 2",
-                            Description = "Поставленных сложившаяся богатый.",
-                            Image = "https://dummyimage.com/100x100/fff/aaa",
-                            Name = "Свободный Гранитный Стул",
-                            Price = 612.49m,
+                            Category = "Категория 1",
+                            Description = "Системы эксперимент проект.",
+                            Image = "https://s3.timeweb.cloud/c57cd5f2-81f2b807-e48f-465d-8404-4a831602b204/img6.png",
+                            Name = "Свободный Резиновый Берет",
+                            Price = 792.66m,
                             SpecialTag = "Новинка"
                         },
                         new
                         {
                             Id = 8,
                             Category = "Категория 3",
-                            Description = "Прежде отношении очевидна финансовых существующий широкому соображения массового условий.",
-                            Image = "https://dummyimage.com/100x100/fff/aaa",
-                            Name = "Лоснящийся Гранитный Майка",
-                            Price = 999.46m,
-                            SpecialTag = "Популярные"
+                            Description = "Национальный рамки следует систему нашей.",
+                            Image = "https://s3.timeweb.cloud/c57cd5f2-81f2b807-e48f-465d-8404-4a831602b204/img7.png",
+                            Name = "Потрясающий Кожанный Кошелек",
+                            Price = 148.89m,
+                            SpecialTag = "Рекомендуемые"
                         },
                         new
                         {
                             Id = 9,
                             Category = "Категория 2",
-                            Description = "Позиции обществом следует обеспечивает уточнения участия демократической от.",
-                            Image = "https://dummyimage.com/100x100/fff/aaa",
-                            Name = "Эргономичный Гранитный Сабо",
-                            Price = 511.28m,
+                            Description = "Задача особенности предложений роль эксперимент проверки.",
+                            Image = "https://s3.timeweb.cloud/c57cd5f2-81f2b807-e48f-465d-8404-4a831602b204/img8.png",
+                            Name = "Грубый Меховой Берет",
+                            Price = 618.04m,
                             SpecialTag = "Новинка"
                         },
                         new
                         {
                             Id = 10,
-                            Category = "Категория 2",
-                            Description = "Таким обеспечение системы модели повышение не вызывает проверки проект.",
-                            Image = "https://dummyimage.com/100x100/fff/aaa",
-                            Name = "Грубый Гранитный Майка",
-                            Price = 774.65m,
-                            SpecialTag = "Новинка"
+                            Category = "Категория 1",
+                            Description = "Обучения направлений зависит.",
+                            Image = "https://s3.timeweb.cloud/c57cd5f2-81f2b807-e48f-465d-8404-4a831602b204/img9.png",
+                            Name = "Грубый Натуральный Кошелек",
+                            Price = 698.59m,
+                            SpecialTag = "Рекомендуемые"
                         });
                 });
 

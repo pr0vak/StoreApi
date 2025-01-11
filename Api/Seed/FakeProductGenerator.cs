@@ -11,6 +11,7 @@ public static class FakeProductGenerator
 
         var categories = new[] { "Категория 1", "Категория 2", "Категория 3" };
         var specialTags = new[] { "Новинка", "Популярные", "Рекомендуемые" };
+        int currentIndex = 0;
 
 
         return new Faker<Product>("ru")
@@ -20,7 +21,7 @@ public static class FakeProductGenerator
             .RuleFor(m => m.SpecialTag, f => f.PickRandom(specialTags))
             .RuleFor(m => m.Category, f => f.PickRandom(categories))
             .RuleFor(m => m.Price, f => Math.Round(f.Random.Decimal(1, 1000), 2))
-            .RuleFor(m => m.Image, f => "https://dummyimage.com/100x100/fff/aaa")
+            .RuleFor(m => m.Image, f => $"https://s3.timeweb.cloud/c57cd5f2-81f2b807-e48f-465d-8404-4a831602b204/img{currentIndex++}.png")
             .Generate(count);
     }
 }

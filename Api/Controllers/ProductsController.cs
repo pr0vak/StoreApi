@@ -191,9 +191,9 @@ public class ProductsController : StoreController
                 });
             }
 
-            var product = await dbContext.Products.FindAsync(id);
+            var productFromDb = await dbContext.Products.FindAsync(id);
 
-            if (product is null)
+            if (productFromDb is null)
             {
                 return NotFound(new ServerResponse
                 {
@@ -203,7 +203,9 @@ public class ProductsController : StoreController
                 });
             }
 
-            dbContext.Products.Remove(product);
+
+            await fileStorage.RemoveFileAsync(productFromDb.Image.Split("/").Last());
+            dbContext.Products.Remove(productFromDb);
             await dbContext.SaveChangesAsync();
 
             return Ok(new ServerResponse
