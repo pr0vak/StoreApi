@@ -4,14 +4,17 @@ using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Api.ModelDto;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Api.Storage;
 
 namespace Api.Controllers;
 
 public class ProductsController : StoreController
 {
-    public ProductsController(AppDbContext dbContext) : base(dbContext)
+    private readonly IFileStorageService fileStorage;
+
+    public ProductsController(AppDbContext dbContext, IFileStorageService fileStorage) : base(dbContext)
     {
+        this.fileStorage = fileStorage;
     }
 
     [HttpGet]
@@ -45,7 +48,7 @@ public class ProductsController : StoreController
 
     [HttpPost]
     public async Task<ActionResult<ServerResponse>> CreateProduct(
-        [FromBody] ProductCreateDto productCreateDto)
+        [FromForm] ProductCreateDto productCreateDto)
     {
         try
         {
@@ -69,7 +72,7 @@ public class ProductsController : StoreController
                     SpecialTag = productCreateDto.SpecialTag,
                     Category = productCreateDto.Category,
                     Price = productCreateDto.Price,
-                    Image = "https://dummyimage.com/150x150/fff/aaa"
+                    Image = await fileStorage.UploadFileAsync(productCreateDto.Image)
                 };
 
                 await dbContext.Products.AddAsync(item);
@@ -103,7 +106,7 @@ public class ProductsController : StoreController
 
     [HttpPut("{id}")]
     public async Task<ActionResult<ServerResponse>> UpdateProduct(
-        int id, [FromBody] ProductUpdateDto productUpdateDto)
+        int id, [FromForm] ProductUpdateDto productUpdateDto)
     {
         try
         {
@@ -140,7 +143,8 @@ public class ProductsController : StoreController
 
                 if (productUpdateDto.Image is not null && productUpdateDto.Image.Length > 0)
                 {
-                    productFromDb.Image = "https://dummyimage.com/200x200/fff/aaa";
+                    await fileStorage.RemoveFileAsync(productFromDb.Image.Split("/").Last());
+                    productFromDb.Image = await fileStorage.UploadFileAsync(productUpdateDto.Image);
                 }
 
                 dbContext.Products.Update(productFromDb);
