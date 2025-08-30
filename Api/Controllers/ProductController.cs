@@ -13,7 +13,7 @@ public class ProductController : StoreController
     }
 
     [HttpGet]
-    public async Task<ActionResult<string>> GetProducts()
+    public async Task<IActionResult> GetProducts()
     {
         return Ok(new ServerResponse
         {
