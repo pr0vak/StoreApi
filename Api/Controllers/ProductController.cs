@@ -22,7 +22,7 @@ public class ProductController : StoreController
         });
     }
 
-    [HttpGet]
+    [HttpGet("{id}", Name = nameof(GetProductById))]
     public async Task<IActionResult> GetProductById(int id)
     {
         if (id <= 0)
