@@ -1,13 +1,19 @@
+using Api.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api.Controllers;
 
 public class ProductController : StoreController
 {
-    [HttpGet]
-    public async Task<ActionResult<string>> Get()
+    public ProductController(AppDbContext dbContext) : base(dbContext)
     {
-        return Ok(await Task.FromResult<string>("Test"));
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<string>> GetProducts()
+    {
+        return Ok(await dbContext.Products.ToListAsync());
     }
 }
 
