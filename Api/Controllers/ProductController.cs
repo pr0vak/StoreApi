@@ -113,5 +113,79 @@ public class ProductController : StoreController
             });
         }
     }
+
+    [HttpPut]
+    public async Task<ActionResult<ServerResponse>> UpdateProduct(
+        int id, [FromBody] ProductUpdateDto productUpdateDto)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                if (productUpdateDto is null || productUpdateDto.Id != id)
+                {
+                    return BadRequest(new ServerResponse()
+                    {
+                        IsSuccess = false,
+                        StatusCode = HttpStatusCode.BadRequest,
+                        ErrorMessages = { "Не валидная модель" }
+                    });
+                }
+
+                var productFromDb = await dbContext.Products.FindAsync(id);
+
+                if (productFromDb is null)
+                {
+                    return BadRequest(new ServerResponse()
+                    {
+                        IsSuccess = false,
+                        StatusCode = HttpStatusCode.BadRequest,
+                        ErrorMessages = { "Продукт с таким Id не найден" }
+                    });
+                }
+
+                if (!string.IsNullOrWhiteSpace(productUpdateDto.Category))
+                {
+                    productFromDb.Category = productUpdateDto.Category;
+                }
+
+                if (!string.IsNullOrWhiteSpace(productUpdateDto.Image))
+                {
+                    productFromDb.Image = "https://placehold.co/200x160";
+                }
+
+                productFromDb.Name = productUpdateDto.Name;
+                productFromDb.Description = productUpdateDto.Description;
+                productFromDb.Price = productUpdateDto.Price;
+
+                dbContext.Products.Update(productFromDb);
+                await dbContext.SaveChangesAsync();
+
+                return Ok(new ServerResponse()
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Result = productFromDb
+                });
+            }
+            else
+            {
+                return BadRequest(new ServerResponse()
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    ErrorMessages = { "Не валидная модель" }
+                });
+        }
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ServerResponse()
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                ErrorMessages = { "Что-то пошло не так", ex.Message }
+            });
+        }       
+    }
 }
 
