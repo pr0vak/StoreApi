@@ -1,6 +1,7 @@
 using System.Net;
 using Api.Data;
 using Api.Models;
+using Api.ModelDto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
