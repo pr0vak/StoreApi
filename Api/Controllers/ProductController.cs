@@ -175,7 +175,7 @@ public class ProductController : StoreController
                     StatusCode = HttpStatusCode.BadRequest,
                     ErrorMessages = { "Не валидная модель" }
                 });
-        }
+            }
         }
         catch (Exception ex)
         {
@@ -185,7 +185,53 @@ public class ProductController : StoreController
                 StatusCode = HttpStatusCode.BadRequest,
                 ErrorMessages = { "Что-то пошло не так", ex.Message }
             });
-        }       
+        }
+    }
+
+        [HttpDelete]
+        public async Task<ActionResult<ServerResponse>> RemoveProductById(int id)
+        {
+        try
+        {
+            if (id <= 0)
+            {
+                return BadRequest(new ServerResponse()
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    ErrorMessages = { "Некорректно введен Id продукта." }
+                });
+            }
+
+            var product = await dbContext.Products.FindAsync(id);
+
+            if (product is null)
+            {
+                return NotFound(new ServerResponse()
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.NotFound,
+                    ErrorMessages = { "Продукт с таким Id не найден." }
+                });
+            }
+
+            dbContext.Products.Remove(product);
+            await dbContext.SaveChangesAsync();
+
+            return Ok(new ServerResponse()
+            {
+                StatusCode = HttpStatusCode.NoContent
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ServerResponse()
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                ErrorMessages = { "Что-то пошло не так...", ex.Message }
+            });
+        }
     }
 }
 
