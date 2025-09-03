@@ -18,4 +18,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+await app.Services.InitializeRolesAsync();
+
 app.Run();
