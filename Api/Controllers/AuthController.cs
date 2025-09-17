@@ -2,6 +2,7 @@ using System.Net;
 using Api.Data;
 using Api.ModelDto;
 using Api.Models;
+using Api.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,14 +13,17 @@ public class AuthController : StoreController
 {
     private readonly RoleManager<IdentityRole> roleManager;
     private readonly UserManager<AppUser> userManager;
+    private readonly JwtTokenGenerator jwtTokenGenerator;
 
     public AuthController(AppDbContext dbContext,
         RoleManager<IdentityRole> roleManager,
-        UserManager<AppUser> userManager)
+        UserManager<AppUser> userManager,
+        JwtTokenGenerator jwtTokenGenerator)
         : base(dbContext)
     {
         this.roleManager = roleManager;
         this.userManager = userManager;
+        this.jwtTokenGenerator = jwtTokenGenerator;
     }
 
     [HttpPost]
@@ -83,5 +87,38 @@ public class AuthController : StoreController
             Result = "Регистрация завершена"
         });
 
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<ServerResponse>> Login(
+        [FromBody] LoginRequestDto loginRequestDto)
+    {
+        var userFromDb = await dbContext.AppUsers
+            .FirstOrDefaultAsync(u =>
+                u.NormalizedEmail == loginRequestDto.Email.ToUpper());
+
+        if (userFromDb == null || !await userManager
+            .CheckPasswordAsync(userFromDb, loginRequestDto.Password))
+        {
+            return BadRequest(new ServerResponse()
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                ErrorMessages = { "Неверный логин или пароль" }
+            });
+        }
+
+        var roles = await userManager.GetRolesAsync(userFromDb);
+        var token = jwtTokenGenerator.GenerateJwtToken(userFromDb, roles);
+
+        return Ok(new ServerResponse()
+        {
+            StatusCode = HttpStatusCode.OK,
+            Result = new LoginResponseDto()
+            {
+                Email = userFromDb.Email,
+                Token = token
+            }
+        });
     }
 }

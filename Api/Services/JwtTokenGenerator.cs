@@ -24,8 +24,7 @@ public class JwtTokenGenerator
         {
             Subject = new ClaimsIdentity(new Claim[]{
                 new Claim("FirstName", user.FirstName),
-                new Claim("LastName", user.LastName),
-                new Claim("Id", user.Id),
+                new Claim("id", user.Id),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Role, string.Join(",", roles))
             }),
@@ -34,7 +33,7 @@ public class JwtTokenGenerator
 
             SigningCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(key),
-                SecurityAlgorithms.HmacSha256Signature)
+                SecurityAlgorithms.HmacSha512Signature)
         };
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
