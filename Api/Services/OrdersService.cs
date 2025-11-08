@@ -22,6 +22,7 @@ public class OrdersService
             CustomerEmail = orderHeaderCreateDto.CustomerEmail,
             AppUserId = orderHeaderCreateDto.AppUserId,
             OrderTotalAmount = orderHeaderCreateDto.OrderTotalAmount,
+            OrderDateTime = DateTime.UtcNow,
             TotalCount = orderHeaderCreateDto.TotalCount,
             Status = string.IsNullOrWhiteSpace(orderHeaderCreateDto.Status)
                 ? SharedData.Statuses.Pending
@@ -38,7 +39,7 @@ public class OrdersService
                 OrderHeaderId = order.OrderHeaderId,
                 ProductId = orderDetailsDto.ProductId,
                 Quantity = orderDetailsDto.Quantity,
-                ItemName = orderDetailsDto.ItemName,
+                ItemName = orderDetailsDto.ItemName,    
                 Price = orderDetailsDto.Price
             };
 
