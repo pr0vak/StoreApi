@@ -1,6 +1,7 @@
 using Api.Data;
 using Api.ModelDto;
 using Api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api.Services;
 
@@ -39,7 +40,7 @@ public class OrdersService
                 OrderHeaderId = order.OrderHeaderId,
                 ProductId = orderDetailsDto.ProductId,
                 Quantity = orderDetailsDto.Quantity,
-                ItemName = orderDetailsDto.ItemName,    
+                ItemName = orderDetailsDto.ItemName,
                 Price = orderDetailsDto.Price
             };
 
@@ -49,5 +50,13 @@ public class OrdersService
         await dbContext.SaveChangesAsync();
 
         return order;
+    }
+    
+    public async Task<OrderHeader> GetOrderById(int id)
+    {
+        return await dbContext.OrderHeaders
+            .Include(orderHeader => orderHeader.OrderDetailItems)
+            .ThenInclude(orderDetails => orderDetails.Product)
+            .FirstOrDefaultAsync(orderHeader => orderHeader.OrderHeaderId == id);
     }
 }
