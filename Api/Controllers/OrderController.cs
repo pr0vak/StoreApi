@@ -94,7 +94,31 @@ namespace Api.Controllers
                     ErrorMessages = { "Что-то пошло не так...", ex.Message }
                 });
             }
+        }
 
+        [HttpGet]
+        public async Task<ActionResult<ServerResponse>> GetOrdersByUserId(string  userId)
+        {
+            try
+            {
+                var orders = await ordersService.GetOrderByUserIdAsync(userId);
+
+                return Ok(new ServerResponse
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Result = orders
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, 
+                    new ServerResponse
+                    {
+                        IsSuccess = false,
+                        StatusCode = HttpStatusCode.InternalServerError,
+                        ErrorMessages = { "Что-то пошло не так...", ex.Message }
+                    });
+            }
         }
     }
 }
