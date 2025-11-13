@@ -52,11 +52,28 @@ public class OrdersService
         return order;
     }
     
-    public async Task<OrderHeader> GetOrderById(int id)
+    public async Task<OrderHeader> GetOrderByIdAsync(int id)
     {
         return await dbContext.OrderHeaders
             .Include(orderHeader => orderHeader.OrderDetailItems)
             .ThenInclude(orderDetails => orderDetails.Product)
             .FirstOrDefaultAsync(orderHeader => orderHeader.OrderHeaderId == id);
+    }
+
+    public async Task<IEnumerable<OrderHeader>> GetOrderByUserIdAsync(string userId)
+    {
+        var query = dbContext.OrderHeaders
+            .Include(orderHeader => orderHeader.OrderDetailItems)
+            .ThenInclude(orderDetails => orderDetails.Product)
+            .OrderByDescending(orderHeader => orderHeader.AppUserId);
+
+        if (!string.IsNullOrEmpty(userId))
+        {
+            return await query
+                .Where(orderHeader => orderHeader.AppUserId == userId)
+                .ToListAsync();
+        }
+
+        return await query.ToListAsync();
     }
 }
