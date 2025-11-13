@@ -103,7 +103,7 @@ namespace Api.Controllers
             {
                 var orders = await ordersService.GetOrderByUserIdAsync(userId);
 
-                return Ok(new ServerResponse
+                return Ok(new ServerResponse()
                 {
                     StatusCode = HttpStatusCode.OK,
                     Result = orders
@@ -118,6 +118,41 @@ namespace Api.Controllers
                         StatusCode = HttpStatusCode.InternalServerError,
                         ErrorMessages = { "Что-то пошло не так...", ex.Message }
                     });
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ServerResponse>> UpdateOrderHeader(int id, 
+            [FromBody] OrderHeaderUpdateDto orderHeaderUpdateDto)
+        {
+            try
+            {
+                var success = await ordersService.UpdateOrderHeaderAsync(id, orderHeaderUpdateDto);
+
+                if (!success)
+                {
+                    return BadRequest(new ServerResponse
+                    {
+                        IsSuccess = false,
+                        StatusCode = HttpStatusCode.BadRequest,
+                        ErrorMessages = { "Обновление пошло не по плану" }
+                    });
+                }
+
+                return Ok(new ServerResponse()
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Result = "Всё обновлено"
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, new ServerResponse
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    ErrorMessages = { "Что-то пошло не так...", ex.Message }
+                });
             }
         }
     }
