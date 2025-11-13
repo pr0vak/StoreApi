@@ -76,4 +76,39 @@ public class OrdersService
 
         return await query.ToListAsync();
     }
+
+    public async Task<bool> UpdateOrderHeaderAsync(int id, OrderHeaderUpdateDto orderHeaderUpdateDto)
+    {
+        if (orderHeaderUpdateDto is null || orderHeaderUpdateDto.OrderHeaderId != id)
+        {
+            return false;
+        }
+
+        var orderHeaderFromDb = await dbContext.OrderHeaders
+            .FirstOrDefaultAsync(o => o.OrderHeaderId == id);
+
+        if (orderHeaderFromDb is null)
+        {
+            return false;
+        }
+
+        if (!string.IsNullOrWhiteSpace(orderHeaderUpdateDto.CustomerName))
+        {
+            orderHeaderFromDb.CustomerName = orderHeaderUpdateDto.CustomerName;
+        }
+
+        if (!string.IsNullOrWhiteSpace(orderHeaderUpdateDto.CustomerEmail))
+        {
+            orderHeaderFromDb.CustomerEmail = orderHeaderUpdateDto.CustomerEmail;
+        }
+
+        if (!string.IsNullOrWhiteSpace(orderHeaderUpdateDto.Status))
+        {
+            orderHeaderFromDb.Status = orderHeaderUpdateDto.Status;
+        }
+
+        await dbContext.SaveChangesAsync();
+
+        return true;
+    }
 }
