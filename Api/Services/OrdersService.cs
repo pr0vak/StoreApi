@@ -74,7 +74,7 @@ public class OrdersService
                 .ToListAsync();
         }
 
-        return await query.ToListAsync();
+        return Enumerable.Empty<OrderHeader>();
     }
 
     public async Task<bool> UpdateOrderHeaderAsync(int id, OrderHeaderUpdateDto orderHeaderUpdateDto)
