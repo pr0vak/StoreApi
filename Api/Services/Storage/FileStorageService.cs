@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace Api.Services.Storage;
 
-public class FileStorageService
+public class FileStorageService : IFileStorageService
 {
     private readonly string serviceURL;
     private readonly string region;
