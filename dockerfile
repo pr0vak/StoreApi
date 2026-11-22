@@ -1,7 +1,7 @@
 # docker build --no-cache -t store-api:latest .
 # docker run -d -p 6310:9090 --name store-app-api store-api:latest
 
-# Базовый образ .NET 9
+# Базовый образ .NET 10
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build-env
 WORKDIR /app
 
