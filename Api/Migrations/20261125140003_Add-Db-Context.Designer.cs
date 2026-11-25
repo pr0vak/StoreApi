@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261125014536_CreateIdentityTables")]
-    partial class CreateIdentityTables
+    [Migration("20261125140003_Add-Db-Context")]
+    partial class AddDbContext
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
