@@ -4,5 +4,5 @@ namespace Api.Models;
 
 public class AppUser : IdentityUser
 {
-    public string FirstName { get; set; }
+    public required string FirstName { get; set; }
 }

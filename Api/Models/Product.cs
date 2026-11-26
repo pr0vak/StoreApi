@@ -5,14 +5,14 @@ namespace Api.Models;
 public class Product
 {
     [Key]
-    public int Id { get; set; }
+    public required int Id { get; set; }
     [Required]
-    public string Name { get; set; }
+    public required string Name { get; set; }
     [Required]
-    public string Description { get; set; }
-    public string SpecialTag { get; set; }
-    public string Category { get; set; }
+    public required string Description { get; set; }
+    public string? SpecialTag { get; set; }
+    public string? Category { get; set; }
     [Range(1, 1000)]
-    public decimal Price { get; set; }
-    public string Image { get; set; }
+    public required decimal Price { get; set; }
+    public string? Image { get; set; }
 }
