@@ -1,4 +1,6 @@
+using System.Net;
 using Api.Data;
+using Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +12,10 @@ public class ProductController(AppDbContext dbContext)
     [HttpGet]
     public async Task<IActionResult> GetProducts()
     {
-        return Ok(await dbContext.Products.ToListAsync());
+        return Ok(new ServerResponse
+        {
+            StatusCode = HttpStatusCode.OK,
+            Result = await dbContext.Products.ToListAsync()
+        });
     }
 }
