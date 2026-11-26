@@ -1,4 +1,5 @@
 using Api.Models;
+using Api.Seed;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -15,5 +16,12 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext(options)
         base.OnConfiguring(optionsBuilder);
         optionsBuilder.ConfigureWarnings(warnings =>
             warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
+    }
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+        builder.Entity<Product>()
+            .HasData(FakeProductGenerator.GenerateProductList());
     }
 }

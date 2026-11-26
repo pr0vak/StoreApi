@@ -53,6 +53,208 @@ namespace Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Category = "Категория 2",
+                            Description = "За прогрессивного место современного различных забывать этих.",
+                            Image = "https://devtool.tech/api/placeholder/200/200",
+                            Name = "Лоснящийся Гранитный Кулон",
+                            Price = 412.09m,
+                            SpecialTag = "Рекомендуемый"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Category = "Категория 1",
+                            Description = "Проверки правительством сомнений задания задания выполнять.",
+                            Image = "https://devtool.tech/api/placeholder/200/200",
+                            Name = "Большой Меховой Ножницы",
+                            Price = 97.85m,
+                            SpecialTag = "Популярный"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Category = "Категория 3",
+                            Description = "Управление принципов процесс.",
+                            Image = "https://devtool.tech/api/placeholder/200/200",
+                            Name = "Потрясающий Неодимовый Ботинок",
+                            Price = 764.03m,
+                            SpecialTag = "Популярный"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Category = "Категория 1",
+                            Description = "Работы порядка влечёт социально-экономическое значительной социально-ориентированный.",
+                            Image = "https://devtool.tech/api/placeholder/200/200",
+                            Name = "Великолепный Резиновый Ботинок",
+                            Price = 801.10m,
+                            SpecialTag = "Новинка"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Category = "Категория 2",
+                            Description = "Роль забывать административных способствует зависит высокотехнологичная.",
+                            Image = "https://devtool.tech/api/placeholder/200/200",
+                            Name = "Практичный Пластиковый Сабо",
+                            Price = 165.58m,
+                            SpecialTag = "Популярный"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Category = "Категория 1",
+                            Description = "По стороны а повышению также не.",
+                            Image = "https://devtool.tech/api/placeholder/200/200",
+                            Name = "Маленький Пластиковый Кулон",
+                            Price = 887.99m,
+                            SpecialTag = "Новинка"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Category = "Категория 1",
+                            Description = "Особенности путь внедрения развития систему влечёт путь требует внедрения модели.",
+                            Image = "https://devtool.tech/api/placeholder/200/200",
+                            Name = "Фантастический Резиновый Свитер",
+                            Price = 867.16m,
+                            SpecialTag = "Рекомендуемый"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Category = "Категория 2",
+                            Description = "Формированию прежде принципов.",
+                            Image = "https://devtool.tech/api/placeholder/200/200",
+                            Name = "Невероятный Неодимовый Компьютер",
+                            Price = 847.01m,
+                            SpecialTag = "Рекомендуемый"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Category = "Категория 2",
+                            Description = "Качественно качества место нашей поэтапного качества роль консультация высокотехнологичная.",
+                            Image = "https://devtool.tech/api/placeholder/200/200",
+                            Name = "Практичный Пластиковый Кулон",
+                            Price = 564.86m,
+                            SpecialTag = "Рекомендуемый"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Category = "Категория 2",
+                            Description = "Принимаемых рост социально-ориентированный системы модели обеспечение проблем интересный повседневной нами.",
+                            Image = "https://devtool.tech/api/placeholder/200/200",
+                            Name = "Эргономичный Меховой Берет",
+                            Price = 473.53m,
+                            SpecialTag = "Новинка"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Category = "Категория 2",
+                            Description = "Выбранный общества общества актуальность высокотехнологичная в вызывает проблем насущным.",
+                            Image = "https://devtool.tech/api/placeholder/200/200",
+                            Name = "Потрясающий Кожанный Ножницы",
+                            Price = 158.28m,
+                            SpecialTag = "Новинка"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Category = "Категория 3",
+                            Description = "Инновационный идейные формировании организационной.",
+                            Image = "https://devtool.tech/api/placeholder/200/200",
+                            Name = "Лоснящийся Гранитный Свитер",
+                            Price = 833.66m,
+                            SpecialTag = "Рекомендуемый"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Category = "Категория 1",
+                            Description = "Нами забывать прежде уточнения.",
+                            Image = "https://devtool.tech/api/placeholder/200/200",
+                            Name = "Практичный Меховой Компьютер",
+                            Price = 108.46m,
+                            SpecialTag = "Новинка"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Category = "Категория 2",
+                            Description = "Кадров важную роль.",
+                            Image = "https://devtool.tech/api/placeholder/200/200",
+                            Name = "Большой Неодимовый Майка",
+                            Price = 878.40m,
+                            SpecialTag = "Рекомендуемый"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Category = "Категория 3",
+                            Description = "Различных в способствует количественный понимание прогресса гражданского предложений выбранный начало.",
+                            Image = "https://devtool.tech/api/placeholder/200/200",
+                            Name = "Интеллектуальный Гранитный Майка",
+                            Price = 484.54m,
+                            SpecialTag = "Новинка"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Category = "Категория 3",
+                            Description = "Различных изменений социально-экономическое задача прогресса гражданского разнообразный а создаёт повышению.",
+                            Image = "https://devtool.tech/api/placeholder/200/200",
+                            Name = "Фантастический Резиновый Берет",
+                            Price = 834.48m,
+                            SpecialTag = "Новинка"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Category = "Категория 3",
+                            Description = "Путь принципов повышение инновационный концепция выполнять по вызывает плановых.",
+                            Image = "https://devtool.tech/api/placeholder/200/200",
+                            Name = "Большой Гранитный Свитер",
+                            Price = 832.45m,
+                            SpecialTag = "Популярный"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Category = "Категория 3",
+                            Description = "Настолько структура за гражданского в широким шагов.",
+                            Image = "https://devtool.tech/api/placeholder/200/200",
+                            Name = "Невероятный Стальной Клатч",
+                            Price = 678.33m,
+                            SpecialTag = "Рекомендуемый"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Category = "Категория 3",
+                            Description = "Соответствующих общественной высшего зависит оценить следует общественной формировании.",
+                            Image = "https://devtool.tech/api/placeholder/200/200",
+                            Name = "Маленький Гранитный Кошелек",
+                            Price = 810.04m,
+                            SpecialTag = "Рекомендуемый"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Category = "Категория 1",
+                            Description = "Поставленных внедрения формировании повышению.",
+                            Image = "https://devtool.tech/api/placeholder/200/200",
+                            Name = "Потрясающий Хлопковый Плащ",
+                            Price = 901.33m,
+                            SpecialTag = "Рекомендуемый"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
