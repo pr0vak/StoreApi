@@ -1,5 +1,6 @@
 using System.Net;
 using Api.Data;
+using Api.ModelDto;
 using Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,7 @@ namespace Api.Controllers;
 public class ProductController(AppDbContext dbContext) : StoreController(dbContext)
 {
     [HttpGet]
-    public async Task<IActionResult> GetProducts()
+    public async Task<ActionResult<ServerResponse>> GetProducts()
     {
         return Ok(new ServerResponse
         {
@@ -19,7 +20,7 @@ public class ProductController(AppDbContext dbContext) : StoreController(dbConte
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetProductById(int id)
+    public async Task<ActionResult<ServerResponse>> GetProductById(int id)
     {
         if (id <= 0)
         {
@@ -48,5 +49,13 @@ public class ProductController(AppDbContext dbContext) : StoreController(dbConte
             StatusCode = HttpStatusCode.OK,
             Result = product
         });
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<ServerResponse>> AppendProduct(
+        [FromBody] ProductCreateDto productCreateDto
+    )
+    {
+
     }
 }
