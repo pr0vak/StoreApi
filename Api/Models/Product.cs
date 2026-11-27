@@ -5,7 +5,7 @@ namespace Api.Models;
 public class Product
 {
     [Key]
-    public required int Id { get; set; }
+    public int Id { get; set; }
     [Required]
     public required string Name { get; set; }
     [Required]

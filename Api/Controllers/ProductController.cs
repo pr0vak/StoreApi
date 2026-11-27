@@ -19,7 +19,7 @@ public class ProductController(AppDbContext dbContext) : StoreController(dbConte
         });
     }
 
-    [HttpGet]
+    [HttpGet("{id:int}", Name = nameof(GetProductById))]
     public async Task<ActionResult<ServerResponse>> GetProductById(int id)
     {
         if (id <= 0)
@@ -56,6 +56,66 @@ public class ProductController(AppDbContext dbContext) : StoreController(dbConte
         [FromBody] ProductCreateDto productCreateDto
     )
     {
+        if (ModelState.IsValid)
+        {
+            try
+            {
+                if (productCreateDto.Image == null
+                    || productCreateDto.Image.Length == 0)
+                {
+                    return BadRequest(new ServerResponse
+                    {
+                        IsSuccess = false,
+                        StatusCode = HttpStatusCode.BadRequest,
+                        ErrorMessages = ["Image не может быть пустым."]
+                    });
+                }
+                else
+                {
+                    Product product = new()
+                    {
+                        Name = productCreateDto.Name,
+                        Description = productCreateDto.Description,
+                        SpecialTag = productCreateDto.SpecialTag,
+                        Category = productCreateDto.Category,
+                        Price = productCreateDto.Price,
+                        Image = "https://devtool.tech/api/placeholder/250/250",
+                    };
 
+                    await dbContext.Products.AddAsync(product);
+                    await dbContext.SaveChangesAsync();
+
+                    ServerResponse response = new()
+                    {
+                        StatusCode = HttpStatusCode.Created,
+                        Result = product
+                    };
+
+                    return CreatedAtRoute(
+                        nameof(GetProductById),
+                        new { id = product.Id },
+                        response
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ServerResponse
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    ErrorMessages = ["Что-то пошло не так.", ex.Message]
+                });
+            }
+        }
+        else
+        {
+            return BadRequest(new ServerResponse
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                ErrorMessages = ["Модель данных product не валидна."]
+            });
+        }
     }
 }
