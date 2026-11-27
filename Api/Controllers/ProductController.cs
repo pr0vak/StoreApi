@@ -15,7 +15,7 @@ public class ProductController(AppDbContext dbContext) : StoreController(dbConte
         return Ok(new ServerResponse
         {
             StatusCode = HttpStatusCode.OK,
-            Result = await dbContext.Products.ToListAsync()
+            Result = await DbContext.Products.ToListAsync()
         });
     }
 
@@ -32,7 +32,7 @@ public class ProductController(AppDbContext dbContext) : StoreController(dbConte
             });
         }
 
-        var product = await dbContext.Products.FirstOrDefaultAsync(p => p.Id == id);
+        var product = await DbContext.Products.FirstOrDefaultAsync(p => p.Id == id);
 
         if (product == null)
         {
@@ -60,8 +60,7 @@ public class ProductController(AppDbContext dbContext) : StoreController(dbConte
         {
             try
             {
-                if (productCreateDto.Image == null
-                    || productCreateDto.Image.Length == 0)
+                if (string.IsNullOrEmpty(productCreateDto.Image))
                 {
                     return BadRequest(new ServerResponse
                     {
@@ -82,8 +81,8 @@ public class ProductController(AppDbContext dbContext) : StoreController(dbConte
                         Image = "https://devtool.tech/api/placeholder/250/250",
                     };
 
-                    await dbContext.Products.AddAsync(product);
-                    await dbContext.SaveChangesAsync();
+                    await DbContext.Products.AddAsync(product);
+                    await DbContext.SaveChangesAsync();
 
                     ServerResponse response = new()
                     {

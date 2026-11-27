@@ -7,24 +7,22 @@ namespace Api.Extension;
 
 public static class PostgreSqlServiceExtension
 {
-    public static void AddPostgreSqlDbContext(
-        this IServiceCollection services,
-        IConfiguration configuration
-    )
+    extension(IServiceCollection services)
     {
-        services.AddDbContext<AppDbContext>(options =>
+        public void AddPostgreSqlDbContext(IConfiguration configuration)
         {
-            options.UseNpgsql(
-                configuration.GetConnectionString("PostgreSQLConnection")
-            );
-        });
-    }
+            services.AddDbContext<AppDbContext>(options =>
+            {
+                options.UseNpgsql(
+                    configuration.GetConnectionString("PostgreSQLConnection")
+                );
+            });
+        }
 
-    public static void AddPostgreSqlIdentityContext(
-        this IServiceCollection services
-    )
-    {
-        services.AddIdentity<AppUser, IdentityRole>()
-            .AddEntityFrameworkStores<AppDbContext>();
+        public void AddPostgreSqlIdentityContext()
+        {
+            services.AddIdentity<AppUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>();
+        }
     }
 }
