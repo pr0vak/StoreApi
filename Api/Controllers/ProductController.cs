@@ -32,9 +32,9 @@ public class ProductController(AppDbContext dbContext) : StoreController(dbConte
             });
         }
 
-        var product = await DbContext.Products.FirstOrDefaultAsync(p => p.Id == id);
+        var productFromDb = await DbContext.Products.FirstOrDefaultAsync(p => p.Id == id);
 
-        if (product == null)
+        if (productFromDb == null)
         {
             return NotFound(new ServerResponse
             {
@@ -47,7 +47,7 @@ public class ProductController(AppDbContext dbContext) : StoreController(dbConte
         return Ok(new ServerResponse
         {
             StatusCode = HttpStatusCode.OK,
-            Result = product
+            Result = productFromDb
         });
     }
 
@@ -177,6 +177,53 @@ public class ProductController(AppDbContext dbContext) : StoreController(dbConte
             {
                 StatusCode = HttpStatusCode.OK,
                 Result = productFromDb
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ServerResponse
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                ErrorMessages = ["Что-то пошло не так.", ex.Message]
+            });
+        }
+    }
+
+    [HttpDelete]
+    public async Task<ActionResult<ServerResponse>> DeleteProductById(int id)
+    {
+        if (id <= 0)
+        {
+            return BadRequest(new ServerResponse
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                ErrorMessages = ["Неверный id."]
+            });
+        }
+        
+        var productFromDb = await DbContext.Products.FirstOrDefaultAsync(p => p.Id == id);
+
+        if (productFromDb == null)
+        {
+            return NotFound(new ServerResponse
+            {
+                IsSuccess =  false,
+                StatusCode = HttpStatusCode.NotFound,
+                ErrorMessages = ["Продукт с таким id не найден."]
+            });
+        }
+        
+        DbContext.Products.Remove(productFromDb);
+
+        try
+        {
+            await DbContext.SaveChangesAsync();
+            
+            return Ok(new ServerResponse
+            {
+                StatusCode = HttpStatusCode.NoContent,
             });
         }
         catch (Exception ex)
