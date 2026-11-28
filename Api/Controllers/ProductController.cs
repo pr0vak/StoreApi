@@ -56,64 +56,136 @@ public class ProductController(AppDbContext dbContext) : StoreController(dbConte
         [FromBody] ProductCreateDto productCreateDto
     )
     {
-        if (ModelState.IsValid)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(productCreateDto.Image))
-                {
-                    return BadRequest(new ServerResponse
-                    {
-                        IsSuccess = false,
-                        StatusCode = HttpStatusCode.BadRequest,
-                        ErrorMessages = ["Image не может быть пустым."]
-                    });
-                }
-                else
-                {
-                    Product product = new()
-                    {
-                        Name = productCreateDto.Name,
-                        Description = productCreateDto.Description,
-                        SpecialTag = productCreateDto.SpecialTag,
-                        Category = productCreateDto.Category,
-                        Price = productCreateDto.Price,
-                        Image = "https://devtool.tech/api/placeholder/250/250",
-                    };
-
-                    await DbContext.Products.AddAsync(product);
-                    await DbContext.SaveChangesAsync();
-
-                    ServerResponse response = new()
-                    {
-                        StatusCode = HttpStatusCode.Created,
-                        Result = product
-                    };
-
-                    return CreatedAtRoute(
-                        nameof(GetProductById),
-                        new { id = product.Id },
-                        response
-                    );
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ServerResponse
-                {
-                    IsSuccess = false,
-                    StatusCode = HttpStatusCode.BadRequest,
-                    ErrorMessages = ["Что-то пошло не так.", ex.Message]
-                });
-            }
-        }
-        else
+        if (!ModelState.IsValid)
         {
             return BadRequest(new ServerResponse
             {
                 IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
                 ErrorMessages = ["Модель данных product не валидна."]
+            });
+        }
+
+        try
+        {
+            if (string.IsNullOrEmpty(productCreateDto.Image))
+            {
+                return BadRequest(new ServerResponse
+                {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    ErrorMessages = ["Image не может быть пустым."]
+                });
+            }
+
+            Product product = new()
+            {
+                Name = productCreateDto.Name,
+                Description = productCreateDto.Description,
+                SpecialTag = productCreateDto.SpecialTag,
+                Category = productCreateDto.Category,
+                Price = productCreateDto.Price,
+                Image = "https://devtool.tech/api/placeholder/250/250",
+            };
+
+            await DbContext.Products.AddAsync(product);
+            await DbContext.SaveChangesAsync();
+
+            ServerResponse response = new()
+            {
+                StatusCode = HttpStatusCode.Created,
+                Result = product
+            };
+
+            return CreatedAtRoute(
+                nameof(GetProductById),
+                new { id = product.Id },
+                response
+            );
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ServerResponse
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                ErrorMessages = ["Что-то пошло не так.", ex.Message]
+            });
+        }
+    }
+
+    [HttpPut]
+    public async Task<ActionResult<ServerResponse>> UpdateProduct(int id, [FromBody] ProductUpdateDto? productUpdateDto)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(new ServerResponse
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                ErrorMessages = ["Модель данных product не валидна."]
+            });
+        }
+
+        try
+        {
+            if (productUpdateDto is null || productUpdateDto.Id != id)
+            {
+                return BadRequest(new ServerResponse
+                {
+                    IsSuccess =  false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    ErrorMessages = ["Несоответствие модели данных."]
+                });
+            }
+            
+            var productFromDb = await DbContext.Products.FirstOrDefaultAsync(p => p.Id == id);
+
+            if (productFromDb == null)
+            {
+                return NotFound(new ServerResponse
+                {
+                    IsSuccess =  false,
+                    StatusCode = HttpStatusCode.NotFound,
+                    ErrorMessages = ["Продукт с таким id не найден."]
+                });
+            }
+            
+            productFromDb.Name = productUpdateDto.Name;
+            productFromDb.Description = productUpdateDto.Description;
+            productFromDb.Price = productUpdateDto.Price;
+
+            if (!string.IsNullOrEmpty(productUpdateDto.SpecialTag))
+            {
+                productFromDb.SpecialTag = productUpdateDto.SpecialTag;
+            }
+
+            if (!string.IsNullOrEmpty(productUpdateDto.Category))
+            {
+                productFromDb.Category = productUpdateDto.Category;
+            }
+
+            if (!string.IsNullOrEmpty(productUpdateDto.Image))
+            {
+                productFromDb.Image = "https://devtool.tech/api/placeholder/300/300";
+            }
+            
+            DbContext.Products.Update(productFromDb);
+            await DbContext.SaveChangesAsync();
+
+            return Ok(new ServerResponse
+            {
+                StatusCode = HttpStatusCode.OK,
+                Result = productFromDb
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ServerResponse
+            {
+                IsSuccess = false,
+                StatusCode = HttpStatusCode.BadRequest,
+                ErrorMessages = ["Что-то пошло не так.", ex.Message]
             });
         }
     }

@@ -5,13 +5,8 @@ namespace Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[Action]")]
-    public class StoreController : ControllerBase
+    public class StoreController(AppDbContext dbContext) : ControllerBase
     {
-        protected readonly AppDbContext DbContext;
-
-        public StoreController(AppDbContext dbContext)
-        {
-            this.DbContext = dbContext;
-        }
+        protected readonly AppDbContext DbContext = dbContext;
     }
 }
